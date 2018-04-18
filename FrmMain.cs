@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp2
+namespace HostManageTool
 {
     public partial class FrmMain : Form
     {
@@ -20,12 +20,48 @@ namespace WindowsFormsApp2
 
         private string fileName = System.Environment.SystemDirectory + @"\drivers\etc\hosts";
 
+
+        /// <summary>
+        /// 是否已注册
+        /// </summary>
+        private bool Reged = false;
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             try
             {
+                Program.cpuId = Computer.GetCpuID().Replace("|", "");
+                Program.diskId = Computer.GetDiskID().Replace("|", "");
+                Program.computerName = Computer.GetComputerName().Replace("|", "");
+
+                if (File.Exists(Program.keyFile) == false)
+                {
+                    //无注册文件，肯定未注册
+                    MessageBox.Show(this, "软件未注册，无法保存。", "出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error);                    
+                }
+                else
+                {
+                    StreamReader myreader = File.OpenText(Program.keyFile);//读取记事本文件
+                    string desRegCode = myreader.ReadToEnd();//从当前位置读取到文件末尾
+                    myreader.Close();
+                    myreader.Dispose();
+                    string regCode = Bonn.Helper.Des3.Decrypt(desRegCode);
+                    string[] regInfo = regCode.Split('|');
+                    if (Program.Config.Email.Trim() != regInfo[4])
+                    {
+                        throw new Exception("请填写申请注册码时邮箱");
+                    }
+                    if (Program.AppName != regInfo[5] || Program.cpuId != regInfo[3] || Program.diskId != regInfo[2] || Program.computerName != regInfo[1])
+                    {
+                        throw new Exception("机器码与注册码不匹配，请重新注册。");
+                    }
+                    this.Text = $"host管理工具[已注册给{Program.Config.Email}]";
+                    Reged = true;
+                } 
+
                 rtbxHostsInfo.Text = File.ReadAllText(fileName);
                 btnSave.Enabled = false;
+            
             }
             catch (Exception ex)
             {
@@ -37,6 +73,12 @@ namespace WindowsFormsApp2
         {
             try
             {
+                if (Reged == false)
+                {
+                    MessageBox.Show(this, "软件未注册，无法保存。", "出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 File.WriteAllText(fileName, rtbxHostsInfo.Text);
                 btnSave.Enabled = false;
             }
@@ -103,6 +145,22 @@ namespace WindowsFormsApp2
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void 关于AToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmAbout about = new FrmAbout();
+            about.ShowDialog(this);
+        }
+
+        private void 注册RToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmReg reg = new FrmReg();
+            reg.ShowDialog(this);
+            if (reg.Reged)
+            {
+                this.Text = $"host管理工具[已注册给{Program.Config.Email}]";
+            }
         }
     }
 }

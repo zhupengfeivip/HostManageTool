@@ -20,9 +20,14 @@ namespace HostManageTool
             //noReg.Show(this);
         }
 
-
+        /// <summary>
+        /// host文件位置
+        /// </summary>
         private string hostFileName = System.Environment.SystemDirectory + @"\drivers\etc\hosts";
 
+        /// <summary>
+        /// 未注册倒计时
+        /// </summary>
         private int sec = 30;
 
         /// <summary>

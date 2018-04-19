@@ -127,6 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="H.ico" />
+    <None Include="img\qr-ali.jpg" />
+    <None Include="img\qr-wx.jpg" />
     <None Include="img\#2_256X256.png" />
     <None Include="img\#_256X256.png" />
     <None Include="img\Walking_32x32.png" />

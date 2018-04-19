@@ -17,7 +17,7 @@ namespace HostManageTool
             InitializeComponent();
         }
 
-        
+
 
         /// <summary>
         /// 是否已注册
@@ -34,7 +34,7 @@ namespace HostManageTool
         {
             try
             {
-               
+
                 txtEmail.Text = Program.Config.Email;
             }
             catch (Exception ex)
@@ -61,6 +61,12 @@ namespace HostManageTool
                 sign += $"{Program.diskId}|";
                 sign += $"{Program.computerName}|";
                 sign += $"{Program.Config.RunDateTime}|";
+                if (radioButton1.Checked)
+                    sign += $"1|";
+                else if (radioButton1.Checked)
+                    sign += $"2|";
+                else
+                    sign += $"3|";
                 rtbxMechineCode.Text = Bonn.Helper.Des3.Encrypt(sign);
 
                 Program.Config.Email = txtEmail.Text.Trim().Replace("|", "");
@@ -80,7 +86,7 @@ namespace HostManageTool
             {
                 if (rtbxRegCode.Text.Trim().Length == 0)
                 {
-                    MessageBox.Show(this, "邮箱不能为空。", "出错啦", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "注册码不能为空。", "出错啦", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
                     return;
                 }
                 string regCode = Bonn.Helper.Des3.Decrypt(rtbxRegCode.Text.Trim());
@@ -113,7 +119,40 @@ namespace HostManageTool
             }
         }
 
+        private void btnCopyMachineCode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rtbxMechineCode.Text.Length <= 0)
+                {
+                    MessageBox.Show(this, "机器码不能为空。", "出错啦", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    return;
+                }
+                Clipboard.SetDataObject(rtbxMechineCode.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "出错啦", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+            }
+        }
 
+        private void btnToRegCode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IDataObject iData = Clipboard.GetDataObject();
 
+                // Determines whether the data is in a format you can use.
+                if (iData.GetDataPresent(DataFormats.Text))
+                {
+                    // Yes it is, so display it in a text box.
+                    rtbxRegCode.Text = (String)iData.GetData(DataFormats.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "出错啦", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+            }
+        }
     }
 }

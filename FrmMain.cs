@@ -15,11 +15,15 @@ namespace HostManageTool
         public FrmMain()
         {
             InitializeComponent();
+
+            //FrmNoReg noReg = new FrmNoReg();
+            //noReg.Show(this);
         }
 
 
-        private string fileName = System.Environment.SystemDirectory + @"\drivers\etc\hosts";
+        private string hostFileName = System.Environment.SystemDirectory + @"\drivers\etc\hosts";
 
+        private int sec = 30;
 
         /// <summary>
         /// 是否已注册
@@ -30,6 +34,8 @@ namespace HostManageTool
         {
             try
             {
+                rtbxHostsInfo.Text = File.ReadAllText(hostFileName);
+
                 Program.cpuId = Computer.GetCpuID().Replace("|", "");
                 Program.diskId = Computer.GetDiskID().Replace("|", "");
                 Program.computerName = Computer.GetComputerName().Replace("|", "");
@@ -37,7 +43,12 @@ namespace HostManageTool
                 if (File.Exists(Program.keyFile) == false)
                 {
                     //无注册文件，肯定未注册
-                    MessageBox.Show(this, "软件未注册，无法保存。", "出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error);                    
+                    //MessageBox.Show(this, "软件未注册，无法保存。", "出错啦", MessageBoxButtons.OK, MessageBoxIcon.Error);    
+                    timerCheckReg.Enabled = true;
+                    menuStrip1.Enabled = false;
+                    toolStrip1.Enabled = false;
+                    this.Text = $"host管理工具[未注册]";
+                    return;
                 }
                 else
                 {
@@ -49,19 +60,29 @@ namespace HostManageTool
                     string[] regInfo = regCode.Split('|');
                     if (Program.Config.Email.Trim() != regInfo[4])
                     {
-                        throw new Exception("请填写申请注册码时邮箱");
+                        //throw new Exception("请填写申请注册码时邮箱");
+                        timerCheckReg.Enabled = true;
+                        menuStrip1.Enabled = false;
+                        toolStrip1.Enabled = false;
+                        this.Text = $"host管理工具[未注册]";
+                        return;
                     }
                     if (Program.AppName != regInfo[5] || Program.cpuId != regInfo[3] || Program.diskId != regInfo[2] || Program.computerName != regInfo[1])
                     {
-                        throw new Exception("机器码与注册码不匹配，请重新注册。");
+                        //throw new Exception("机器码与注册码不匹配，请重新注册。");
+                        timerCheckReg.Enabled = true;
+                        menuStrip1.Enabled = false;
+                        toolStrip1.Enabled = false;
+                        return;
                     }
                     this.Text = $"host管理工具[已注册给{Program.Config.Email}]";
+                    timerCheckReg.Enabled = false;
+                    tsslblRegInfo.Text = $"已注册";
+                    menuStrip1.Enabled = true;
+                    toolStrip1.Enabled = true;
                     Reged = true;
-                } 
-
-                rtbxHostsInfo.Text = File.ReadAllText(fileName);
+                }
                 btnSave.Enabled = false;
-            
             }
             catch (Exception ex)
             {
@@ -79,7 +100,7 @@ namespace HostManageTool
                     return;
                 }
 
-                File.WriteAllText(fileName, rtbxHostsInfo.Text);
+                File.WriteAllText(hostFileName, rtbxHostsInfo.Text);
                 btnSave.Enabled = false;
             }
             catch (Exception ex)
@@ -160,6 +181,29 @@ namespace HostManageTool
             if (reg.Reged)
             {
                 this.Text = $"host管理工具[已注册给{Program.Config.Email}]";
+                timerCheckReg.Enabled = false;
+                tsslblRegInfo.Text = $"已注册";
+                menuStrip1.Enabled = true;
+                toolStrip1.Enabled = true;
+            }
+        }
+
+        private void rtbxHostsInfo_TextChanged(object sender, EventArgs e)
+        {
+            btnSave.Enabled = true;
+        }
+
+        private void timerCheckReg_Tick(object sender, EventArgs e)
+        {
+            sec--;
+            tsslblRegInfo.Text = $"未注册，{sec}秒后可编辑";
+            if (sec <= 0)
+            {
+                timerCheckReg.Enabled = false;
+                tsslblRegInfo.Text = $"未注册";
+                menuStrip1.Enabled = true;
+                toolStrip1.Enabled = true;
+                return;
             }
         }
     }

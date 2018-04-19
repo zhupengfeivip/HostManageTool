@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.rtbxHostsInfo = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -44,8 +45,12 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.tsslblRegInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.timerCheckReg = new System.Windows.Forms.Timer(this.components);
+            this.btnReg = new System.Windows.Forms.ToolStripSplitButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbxHostsInfo
@@ -53,9 +58,10 @@
             this.rtbxHostsInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbxHostsInfo.Location = new System.Drawing.Point(0, 50);
             this.rtbxHostsInfo.Name = "rtbxHostsInfo";
-            this.rtbxHostsInfo.Size = new System.Drawing.Size(933, 481);
+            this.rtbxHostsInfo.Size = new System.Drawing.Size(933, 480);
             this.rtbxHostsInfo.TabIndex = 0;
             this.rtbxHostsInfo.Text = "";
+            this.rtbxHostsInfo.TextChanged += new System.EventHandler(this.rtbxHostsInfo_TextChanged);
             // 
             // menuStrip1
             // 
@@ -167,11 +173,35 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 531);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslblRegInfo,
+            this.btnReg});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 530);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(933, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(933, 23);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // tsslblRegInfo
+            // 
+            this.tsslblRegInfo.Name = "tsslblRegInfo";
+            this.tsslblRegInfo.Size = new System.Drawing.Size(131, 18);
+            this.tsslblRegInfo.Text = "toolStripStatusLabel1";
+            // 
+            // timerCheckReg
+            // 
+            this.timerCheckReg.Enabled = true;
+            this.timerCheckReg.Interval = 1000;
+            this.timerCheckReg.Tick += new System.EventHandler(this.timerCheckReg_Tick);
+            // 
+            // btnReg
+            // 
+            this.btnReg.Image = global::HostManageTool.Properties.Resources.@__256X256;
+            this.btnReg.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnReg.Name = "btnReg";
+            this.btnReg.Size = new System.Drawing.Size(88, 21);
+            this.btnReg.Text = "点击注册";
+            this.btnReg.ButtonClick += new System.EventHandler(this.注册RToolStripMenuItem_Click);
             // 
             // FrmMain
             // 
@@ -192,6 +222,8 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,6 +246,9 @@
         private System.Windows.Forms.ToolStripButton btnExit;
         private System.Windows.Forms.ToolStripMenuItem 关于AToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 注册RToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel tsslblRegInfo;
+        private System.Windows.Forms.Timer timerCheckReg;
+        private System.Windows.Forms.ToolStripSplitButton btnReg;
     }
 }
 

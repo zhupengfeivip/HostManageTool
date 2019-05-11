@@ -87,6 +87,8 @@ namespace HostManageTool
                 //    toolStrip1.Enabled = true;
                 //    Reged = true;
                 //}
+
+                this.Text = $"host管理工具-朱鹏飞[{Program.AppVersion}]";
                 btnSave.Enabled = false;
             }
             catch (Exception ex)

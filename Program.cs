@@ -9,7 +9,7 @@ namespace HostManageTool
     public static class Program
     {
         /// <summary>
-        /// 
+        /// 注册文件
         /// </summary>
         public static readonly string keyFile = Environment.SystemDirectory + @"\hostManageTool.key";
 
@@ -17,6 +17,11 @@ namespace HostManageTool
         /// 
         /// </summary>
         public static readonly string AppName = "HostManageTool";
+
+        /// <summary>
+        /// 版本号
+        /// </summary>
+        public static readonly string AppVersion = "Ver1.0.1";
 
         /// <summary>
         /// 

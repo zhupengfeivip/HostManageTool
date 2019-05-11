@@ -46,8 +46,8 @@
             this.btnExit = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslblRegInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timerCheckReg = new System.Windows.Forms.Timer(this.components);
             this.btnReg = new System.Windows.Forms.ToolStripSplitButton();
+            this.timerCheckReg = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -58,7 +58,7 @@
             this.rtbxHostsInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbxHostsInfo.Location = new System.Drawing.Point(0, 50);
             this.rtbxHostsInfo.Name = "rtbxHostsInfo";
-            this.rtbxHostsInfo.Size = new System.Drawing.Size(933, 480);
+            this.rtbxHostsInfo.Size = new System.Drawing.Size(933, 481);
             this.rtbxHostsInfo.TabIndex = 0;
             this.rtbxHostsInfo.Text = "";
             this.rtbxHostsInfo.TextChanged += new System.EventHandler(this.rtbxHostsInfo_TextChanged);
@@ -101,6 +101,7 @@
             this.注册RToolStripMenuItem.Name = "注册RToolStripMenuItem";
             this.注册RToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.注册RToolStripMenuItem.Text = "注册(&R)";
+            this.注册RToolStripMenuItem.Visible = false;
             this.注册RToolStripMenuItem.Click += new System.EventHandler(this.注册RToolStripMenuItem_Click);
             // 
             // 关于AToolStripMenuItem
@@ -176,9 +177,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslblRegInfo,
             this.btnReg});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 530);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 531);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(933, 23);
+            this.statusStrip1.Size = new System.Drawing.Size(933, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -187,12 +188,7 @@
             this.tsslblRegInfo.Name = "tsslblRegInfo";
             this.tsslblRegInfo.Size = new System.Drawing.Size(131, 18);
             this.tsslblRegInfo.Text = "toolStripStatusLabel1";
-            // 
-            // timerCheckReg
-            // 
-            this.timerCheckReg.Enabled = true;
-            this.timerCheckReg.Interval = 1000;
-            this.timerCheckReg.Tick += new System.EventHandler(this.timerCheckReg_Tick);
+            this.tsslblRegInfo.Visible = false;
             // 
             // btnReg
             // 
@@ -201,7 +197,14 @@
             this.btnReg.Name = "btnReg";
             this.btnReg.Size = new System.Drawing.Size(88, 21);
             this.btnReg.Text = "点击注册";
+            this.btnReg.Visible = false;
             this.btnReg.ButtonClick += new System.EventHandler(this.注册RToolStripMenuItem_Click);
+            // 
+            // timerCheckReg
+            // 
+            this.timerCheckReg.Enabled = true;
+            this.timerCheckReg.Interval = 1000;
+            this.timerCheckReg.Tick += new System.EventHandler(this.timerCheckReg_Tick);
             // 
             // FrmMain
             // 
@@ -213,11 +216,14 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "host管理工具";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyUp);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
